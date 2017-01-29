@@ -42,19 +42,9 @@ public class StringsFilesGenerator {
 		try {
 			Map<String, String> wordList = new LinkedHashMap<String, String>(); /* tag == attribute name, value = word to be translated */
 			wordList.putAll(this.tagValueMap);
-			abbNamePair.remove("en");
+			abbNamePair.remove(Const.ORIGINAL_LANGUAGE);
 //			abbNamePair.clear();
 //			abbNamePair.put("default", "English");
-//			abbNamePair.put("de", "de");
-//			abbNamePair.put("fa", "fa");
-//			abbNamePair.put("fr", "fr");
-//			abbNamePair.put("ja", "ja");
-//			abbNamePair.put("ko", "ko");
-//			abbNamePair.put("ru", "ru");
-//			abbNamePair.put("sv", "sv");
-//			abbNamePair.put("th", "th");
-//			abbNamePair.put("vi", "vi");
-//			abbNamePair.put("hi", "hi");
 			// File file = new File("C:\\Users\\Lenovo\\Desktop\\test");
 			// file.mkdir();
 			for (String language : abbNamePair.keySet()) {
@@ -93,7 +83,7 @@ public class StringsFilesGenerator {
 						+ abbNamePair.get(language) + "-------------------");
 				for (String attr : wordList.keySet()) {
 					if(!cache.containsKey(wordList.get(attr))){
-						threads.add(new ThreadPool(handler, "en", language,
+						threads.add(new ThreadPool(handler, Const.ORIGINAL_LANGUAGE, language,
 								wordList.get(attr), attr));
 					}
 				}
