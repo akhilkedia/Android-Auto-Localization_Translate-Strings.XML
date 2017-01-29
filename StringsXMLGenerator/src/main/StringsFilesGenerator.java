@@ -1,8 +1,13 @@
 package main;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +15,12 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import object.ThreadPool;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import object.ThreadPool;
 
 public class StringsFilesGenerator {
 
@@ -28,30 +33,58 @@ public class StringsFilesGenerator {
 		handler = new HTTPRequestHandler();
 		readStringsFile();
 		getLanguageList();
+		abbNamePair = Util.removeUnsupported(abbNamePair);
 		getTranslations();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void getTranslations() {
 		try {
 			Map<String, String> wordList = new LinkedHashMap<String, String>(); /* tag == attribute name, value = word to be translated */
 			wordList.putAll(this.tagValueMap);
-			for (String lang : abbNamePair.values()) {
-				wordList.put(lang, lang);
-			}
+			abbNamePair.remove("en");
 //			abbNamePair.clear();
-			abbNamePair.put("default", "English");
-//			abbNamePair.put("ar", "Arabic");
+//			abbNamePair.put("default", "English");
+//			abbNamePair.put("de", "de");
+//			abbNamePair.put("fa", "fa");
+//			abbNamePair.put("fr", "fr");
+//			abbNamePair.put("ja", "ja");
+//			abbNamePair.put("ko", "ko");
+//			abbNamePair.put("ru", "ru");
+//			abbNamePair.put("sv", "sv");
+//			abbNamePair.put("th", "th");
+//			abbNamePair.put("vi", "vi");
+//			abbNamePair.put("hi", "hi");
 			// File file = new File("C:\\Users\\Lenovo\\Desktop\\test");
 			// file.mkdir();
 			for (String language : abbNamePair.keySet()) {
 				File file2;
-				if (language.equals("default")) {
-					file2 = new File(Const.DESTINATION_PATH
-							+ "values\\values\\strings.xml");
-				} else {
-					file2 = new File(Const.DESTINATION_PATH + "values\\values-"
-							+ language + "\\strings.xml");
+               
+				HashMap<String, String> cache = new HashMap<String, String>();
+				String cachePath = Const.CACHE_PATH +language;
+				
+				File f = new File(cachePath);
+				if(!f.getParentFile().exists())
+					f.getParentFile().mkdirs();
+				try{
+				if(f.exists() && !f.isDirectory()) {
+					FileInputStream fileInputStream = new FileInputStream(f);
+					ObjectInputStream s = new ObjectInputStream(fileInputStream);
+					cache = (HashMap<String, String>) s.readObject();
+					s.close();
 				}
+				}catch(Exception e){
+					cache = new HashMap<String, String>();
+				}
+                
+//				if (language.equals("default")) {
+//					file2 = new File(Const.DESTINATION_PATH
+//							+ "values\\values\\strings.xml");
+//				} else {
+//				}		
+
+				file2 = new File(Const.DESTINATION_PATH + "values-"
+						+ Util.exchangeProblematicCountryCode(language) + "\\strings.xml");
 
 				file2.getParentFile().mkdirs();
 				file2.createNewFile();
@@ -59,14 +92,18 @@ public class StringsFilesGenerator {
 				System.out.println("-----------------"
 						+ abbNamePair.get(language) + "-------------------");
 				for (String attr : wordList.keySet()) {
-					threads.add(new ThreadPool(handler, "en", language,
-							wordList.get(attr), attr));
+					if(!cache.containsKey(wordList.get(attr))){
+						threads.add(new ThreadPool(handler, "en", language,
+								wordList.get(attr), attr));
+					}
 				}
 				for (ThreadPool threadPool : threads) {
 					threadPool.run();
 				}
 				boolean isAllDead = false;
 				while (!isAllDead) {
+					if(threads.size()==0)
+						isAllDead = true;
 					for (ThreadPool thread : threads) {
 						if (thread.isAlive()) {
 							isAllDead = false;
@@ -80,15 +117,32 @@ public class StringsFilesGenerator {
 				}
 				PrintWriter writer = new PrintWriter(file2.getAbsolutePath(),
 						"UTF-8");
+				writer.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 				writer.println("<resources>");
+				
+				for (String attr : wordList.keySet()) {
+					if(cache.containsKey(wordList.get(attr))){
+						System.out.println(cache.get(wordList.get(attr)));
+						writer.println(Util.getXmlFormattedLine(
+								cache.get(wordList.get(attr)), attr));
+					}
+				}
+				
 				for (ThreadPool pool : threads) {
-					System.out.println(pool.getResultWord());
+					//System.out.println(pool.getResultWord());
+					cache.put(pool.getFromWord(), pool.getResultWord());
 					writer.println(Util.getXmlFormattedLine(
 							pool.getResultWord(), pool.getAttr()));
 				}
+				
 				writer.print("</resources>");
 				writer.close();
 				threads.clear();
+				
+                FileOutputStream fileOutputStream = new FileOutputStream(cachePath);
+                ObjectOutputStream s = new ObjectOutputStream(fileOutputStream);
+                s.writeObject(cache);
+                s.close();
 
 			}
 
@@ -137,7 +191,8 @@ public class StringsFilesGenerator {
 
 					Element eElement = (Element) nNode;
 					String tag = eElement.getAttribute("name").toString();
-					String value = eElement.getTextContent();
+					String value = Util.XMLUnescape(eElement.getTextContent().replace("\n", "\r\n"));
+					value = value.replace("\"", "");
 					System.out.println(tag + ", " + value);
 					tagValueMap.put(tag, value);
 

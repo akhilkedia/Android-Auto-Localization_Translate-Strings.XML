@@ -38,6 +38,10 @@ public class ThreadPool {
 		return resultWord;
 	}
 
+	public String getFromWord() {
+		return fromWord;
+	}
+
 	public void setResultWord(String resultWord) {
 		this.resultWord = resultWord;
 	}

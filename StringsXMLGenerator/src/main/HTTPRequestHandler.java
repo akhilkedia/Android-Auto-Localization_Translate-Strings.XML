@@ -61,6 +61,7 @@ public class HTTPRequestHandler {
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
 		}
+		System.out.println("Recived languages as " + result.toString());
 
 		Gson gson = new Gson();
 		GsonResponse gsonResult = gson.fromJson(result.toString(),
@@ -70,7 +71,8 @@ public class HTTPRequestHandler {
 		LinkedHashMap<String, String> abbNamePair = new LinkedHashMap<String, String>();
 		for (String key : map.keySet()) {
 			// System.out.println(key);
-			abbNamePair.put(Util.exchangeProblematicCountryCode(key), map.get(key).getName());
+			//abbNamePair.put(Util.exchangeProblematicCountryCode(key), map.get(key).getName());
+			abbNamePair.put(key, map.get(key).getName());
 		}
 
 		for (String key : abbNamePair.keySet()) {
@@ -117,7 +119,7 @@ public class HTTPRequestHandler {
 		in.close();
 
 		// print result
-		System.out.println(response.toString());
+		//System.out.println(response.toString());
 
 	}
 
@@ -145,7 +147,7 @@ public class HTTPRequestHandler {
 			while ((line = rd.readLine()) != null) {
 				result.append(line);
 			}
-			System.out.println(result);
+			System.out.println("Access Token is - "+result);
 			accessToken = result.toString();
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
@@ -155,7 +157,7 @@ public class HTTPRequestHandler {
 	public String getTranslation(String fromLang, String toLang, String word) {
 		try {
 			HttpClient client = new DefaultHttpClient();
-			HttpGet request = new HttpGet(Const.TRANSLATE_URL + "text=" + URLEncoder.encode(word) + "&from=" + fromLang + "&to=" + toLang);
+			HttpGet request = new HttpGet(Const.TRANSLATE_URL + "text=" + URLEncoder.encode(word, "UTF-8") + "&from=" + fromLang + "&to=" + toLang);
 //			toLang = "tr";
 			// add request header
 			request.addHeader("User-Agent", USER_AGENT);
@@ -166,6 +168,8 @@ public class HTTPRequestHandler {
 //			params.setParameter("text", word);
 //			request.setParams(params);
 			HttpPost post = new HttpPost();
+			
+			//System.out.println(request.getURI());
 			
 			HttpResponse response = client.execute(request);
 
@@ -182,7 +186,8 @@ public class HTTPRequestHandler {
 				result.append(line);
 			}
 			String resultString = Util.splitXmlResult(result.toString());
-//			System.out.println(resultString);
+			resultString = Util.fixnewlines(resultString);
+			//System.out.println(resultString);
 			return resultString;
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
