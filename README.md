@@ -1,46 +1,54 @@
 # Android Auto-Localization - Translate Strings.XML
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+
+[![LicenseGPLv3](https://img.shields.io/badge/License-GPL%20v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0) [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UY6TVJXST724J)
 
 This is a project to localize your Android app , by translating your string resources(e.g. `strings.xml`)  automatically using Microsoft Azure Translate.
 It requires Microsoft Azure Translation API key (instructions below).
 Helps developers localize their Android app easily to 56 languages, with just one click.
 
-##Features
-* Translates to 56 languages
+## Features
+* Translates Android's Strings.xml files to 56 languages!
+* Can also translate small HTML files!
 * Cache translations so you dont end up using all your quota everytime
 * Handles some XML escaping
 
-##Usage
+## Usage
 * Simply edit the constants in `src/main/Const.java`
-* Run the java code (Windows/Linux/etc.) - It will generate all possible translations for you
+* Run the java code in Eclipse (Windows/Linux/etc.) - It will generate all possible translations for you
 
-##How to get FREE Microsoft Azure Translation Key
-1. Sign into Microsoft Azure account.
-If you don’t already have an Azure account, sign up for a Microsoft Azure account at http://azure.com.
-2. Subscribe to a "pay-as-you-go" subscription at https://account.windowsazure.com/Subscriptions
-Will require a credit card, but don't worry, nothing will be charged.
-3. After you have a subscription, sign into the Azure portal at http://portal.azure.com.
-4. Add a Microsoft Translator API subscription to your Azure account.
-Select the ﻿+ New ﻿option.
-Select ﻿Intelligence﻿ from the list of services.
-Select ﻿Cognitive Services APIs﻿.
-Select the ﻿API Type﻿ option.
-﻿Select ﻿Text Translation
-In the ﻿Pricing Tier﻿ section, select the Free Tier (F0)
-Fill out the rest of the form, and press the ﻿Create﻿ button.
-5. Retrieve your authentication key.
-Go to ﻿All Resources﻿ and select the Microsoft Translator API you subscribed to.
-Go to the ﻿Keys ﻿option and copy your subscription key to access the service.
 
-##Limitations
+## How to get Microsoft Azure Translate Key
+
+1. Sign up for a Microsoft Azure account.
+If you don't already have an Azure account, sign up for a [Microsoft Azure account](http://azure.com).
+2. After you have an account, sign into the [Azure Portal](http://portal.azure.com).
+3. Add a "Microsoft Translator API Subscription" to your Azure account.
+  1. Choose a "pay-as-you-go" subscription. Will require a credit card, but don't worry, nothing will be charged.
+  2. Select the "+ New" option.
+  3. Select "Intelligence" from the list of services.
+  4. Select "Cognitive Services APIs".
+  5. Select the "API Type" option.
+  6. Select "Text Translation".
+  7. In the "Pricing Tier" section, select the "Free Tier (F0)".
+  8. Fill out the rest of the form, and press the "Create" button.
+4. Retrieve your "Authentication Key".
+  1. Go to "All Resources" and select the Microsoft Translator API you subscribed to.
+  2. Go to the "Keys" option and copy your subscription key to access the service.
+
+## Limitations
 * Does not handle String Arrays so far
 * Does not handle CDATA
 Keep your strings simple, and this will work just fine. For any issues, post on my GitHub. Or send a pull request.
 
-##Credits
+## Credits
 Fork of original code by Süleyman Yılmaz at https://github.com/e1631225
 
-##License
+## Donations
+If you like this project, buy me a cup of coffee! :) 
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UY6TVJXST724J)
+
+## License
 This program is Android Auto-Localization
 Copyright (C) 2017  Akhil Kedia
 

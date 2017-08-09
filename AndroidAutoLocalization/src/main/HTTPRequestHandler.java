@@ -11,20 +11,15 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import object.GsonResponse;
-
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 
 import com.google.gson.Gson;
+
+import object.GsonResponse;
 
 public class HTTPRequestHandler {
 
@@ -48,13 +43,10 @@ public class HTTPRequestHandler {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("\nSending 'GET' request to URL : "
-				+ Const.BING_SUPPORTED_LANGUAGES_URL);
-		System.out.println("Response Code : "
-				+ response.getStatusLine().getStatusCode());
+		System.out.println("\nSending 'GET' request to URL : " + Const.BING_SUPPORTED_LANGUAGES_URL);
+		System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
-		BufferedReader rd = new BufferedReader(new InputStreamReader(response
-				.getEntity().getContent()));
+		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
 		StringBuffer result = new StringBuffer();
 		String line = "";
@@ -64,14 +56,13 @@ public class HTTPRequestHandler {
 		System.out.println("Recived languages as " + result.toString());
 
 		Gson gson = new Gson();
-		GsonResponse gsonResult = gson.fromJson(result.toString(),
-				GsonResponse.class);
-		Map<String, GsonResponse.Language> map = (Map<String, GsonResponse.Language>) gsonResult
-				.getText();
+		GsonResponse gsonResult = gson.fromJson(result.toString(), GsonResponse.class);
+		Map<String, GsonResponse.Language> map = (Map<String, GsonResponse.Language>) gsonResult.getText();
 		LinkedHashMap<String, String> abbNamePair = new LinkedHashMap<String, String>();
 		for (String key : map.keySet()) {
 			// System.out.println(key);
-			//abbNamePair.put(Util.exchangeProblematicCountryCode(key), map.get(key).getName());
+			// abbNamePair.put(Util.exchangeProblematicCountryCode(key),
+			// map.get(key).getName());
 			abbNamePair.put(key, map.get(key).getName());
 		}
 
@@ -108,8 +99,7 @@ public class HTTPRequestHandler {
 		System.out.println("Post parameters : " + urlParameters);
 		System.out.println("Response Code : " + responseCode);
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 
@@ -119,7 +109,7 @@ public class HTTPRequestHandler {
 		in.close();
 
 		// print result
-		//System.out.println(response.toString());
+		// System.out.println(response.toString());
 
 	}
 
@@ -135,19 +125,17 @@ public class HTTPRequestHandler {
 
 			HttpResponse response = client.execute(request);
 
-			System.out.println("\nSending 'POST' request to URL : "
-					+ Const.BING_SUPPORTED_LANGUAGES_URL);
+			System.out.println("\nSending 'POST' request to URL : " + Const.BING_SUPPORTED_LANGUAGES_URL);
 
 			BufferedReader rd;
-			rd = new BufferedReader(new InputStreamReader(response.getEntity()
-					.getContent()));
+			rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
 			StringBuffer result = new StringBuffer();
 			String line = "";
 			while ((line = rd.readLine()) != null) {
 				result.append(line);
 			}
-			System.out.println("Access Token is - "+result);
+			System.out.println("Access Token is - " + result);
 			accessToken = result.toString();
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
@@ -157,28 +145,28 @@ public class HTTPRequestHandler {
 	public String getTranslation(String fromLang, String toLang, String word) {
 		try {
 			HttpClient client = new DefaultHttpClient();
-			HttpGet request = new HttpGet(Const.TRANSLATE_URL + "text=" + URLEncoder.encode(word, "UTF-8") + "&from=" + fromLang + "&to=" + toLang);
-//			toLang = "tr";
+			HttpGet request = new HttpGet(Const.TRANSLATE_URL + "text=" + URLEncoder.encode(word, "UTF-8") + "&from="
+					+ fromLang + "&to=" + toLang);
+			// toLang = "tr";
 			// add request header
 			request.addHeader("User-Agent", USER_AGENT);
 			request.addHeader("Authorization", "Bearer " + accessToken);
-//			HttpParams params = new BasicHttpParams();
-//			params.setParameter("from", fromLang);
-//			params.setParameter("to", toLang);
-//			params.setParameter("text", word);
-//			request.setParams(params);
+			// HttpParams params = new BasicHttpParams();
+			// params.setParameter("from", fromLang);
+			// params.setParameter("to", toLang);
+			// params.setParameter("text", word);
+			// request.setParams(params);
 			HttpPost post = new HttpPost();
-			
-			//System.out.println(request.getURI());
-			
+
+			// System.out.println(request.getURI());
+
 			HttpResponse response = client.execute(request);
 
-//			System.out.println("\nSending 'GET' request to URL : "
-//					+ Const.TRANSLATE_URL);
+			// System.out.println("\nSending 'GET' request to URL : "
+			// + Const.TRANSLATE_URL);
 
 			BufferedReader rd;
-			rd = new BufferedReader(new InputStreamReader(response.getEntity()
-					.getContent()));
+			rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
 			StringBuffer result = new StringBuffer();
 			String line = "";
@@ -187,7 +175,7 @@ public class HTTPRequestHandler {
 			}
 			String resultString = Util.splitXmlResult(result.toString());
 			resultString = Util.fixnewlines(resultString);
-			//System.out.println(resultString);
+			// System.out.println(resultString);
 			return resultString;
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();

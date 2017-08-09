@@ -11,8 +11,8 @@ public class ThreadPool {
 
 	HTTPRequestHandler handler;
 
-	public ThreadPool(final HTTPRequestHandler handler, final String fromLang,
-			final String toLang, final String fromWord, String attr) {
+	public ThreadPool(final HTTPRequestHandler handler, final String fromLang, final String toLang,
+			final String fromWord, String attr) {
 		super();
 		thread = new Thread(new Runnable() {
 			@Override
@@ -20,9 +20,8 @@ public class ThreadPool {
 				if (toLang.equalsIgnoreCase("default")) {
 					resultWord = fromWord;
 				} else {
-					resultWord = handler.getTranslation(fromLang, toLang,
-							fromWord);
-//					resultWord = Double.toString((Math.random() * 10));
+					resultWord = handler.getTranslation(fromLang, toLang, fromWord);
+					// resultWord = Double.toString((Math.random() * 10));
 				}
 			}
 		});
