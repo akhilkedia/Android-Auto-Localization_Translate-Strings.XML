@@ -85,8 +85,7 @@ public class StringsFilesGenerator {
 				// } else {
 				// }
 
-				file2 = new File(Const.DESTINATION_PATH + "values-" + Util.exchangeProblematicCountryCode(language)
-						+ "\\strings.xml");
+				file2 = new File(Const.DESTINATION_PATH + "values-" + Util.exchangeProblematicCountryCode(language) + File.separator + "strings.xml");
 
 				file2.getParentFile().mkdirs();
 				file2.createNewFile();
@@ -132,7 +131,7 @@ public class StringsFilesGenerator {
 					// Write HTML
 					{
 						File file3 = new File(Const.DESTINATION_PATH + "raw-"
-								+ Util.exchangeProblematicCountryCode(language) + "\\readme.html");
+								+ Util.exchangeProblematicCountryCode(language) + File.separator + "readme.html");
 
 						file3.getParentFile().mkdirs();
 						file3.createNewFile();

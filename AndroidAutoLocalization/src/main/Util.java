@@ -29,8 +29,17 @@ public class Util {
 		Iterator<String> iter = abbNamePair.keySet().iterator();
 		while (iter.hasNext()) {
 			String language = iter.next();
-			if (language.equals("sr-Latn") || language.equals("yue") || language.equals("zh-Hant")
-					|| language.equals("tlh-Qaak")) {
+			if (language.equals("fjn") 
+					|| language.equals("mww") 
+					|| language.equals("otq")  
+					|| language.equals("pt-pt") 
+					|| language.equals("sm") 
+					|| language.equals("sr-Latn")
+					|| language.equals("tlh-Latn") 
+					|| language.equals("tlh-Piqd")
+					|| language.equals("ty") 
+					|| language.equals("yua")
+					|| language.equals("zh-Hant")  ) {
 				iter.remove();
 			}
 		}
@@ -41,22 +50,15 @@ public class Util {
 		// there are some country codes that are not same with google.
 		// we exchange these country codes with google equivalents
 		String result = code;
+
 		if (code.equals("he")) {
 			result = "iw";
-		} else if (code.equals("mww")) {
-			result = "hmn";
-		} else if (code.equals("otq")) {
-			result = "oto";
-		} else if (code.equals("yua")) {
-			result = "myn";
 		} else if (code.equals("id")) {
 			result = "in";
 		} else if (code.equals("sr-Cyrl")) {
 			result = "sr";
 		} else if (code.equals("zh-Hans")) {
 			result = "zh";
-		} else if (code.equals("bs-Latn")) {
-			result = "bs";
 		}
 		return result;
 	}
