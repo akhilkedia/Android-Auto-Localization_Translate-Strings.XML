@@ -3,6 +3,7 @@ package main;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class Util {
@@ -70,7 +71,7 @@ public class Util {
 		// buffer.append(XMLEscape(tag));
 		buffer.append(tag);
 		buffer.append("\">\"");
-		buffer.append(word);
+		buffer.append(StringEscapeUtils.escapeXml11(word));
 		buffer.append("\"</string>");
 		return buffer.toString();
 	}

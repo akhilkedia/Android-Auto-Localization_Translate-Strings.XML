@@ -63,7 +63,6 @@ public class HTTPRequestHandler {
 			// abbNamePair.put(Util.exchangeProblematicCountryCode(key),
 			// map.get(key).getName());
 			abbNamePair.put(key, jsonObject.get(key).getAsJsonObject().get("name").getAsString());
-			break;
 		}
 
 		for (String key : abbNamePair.keySet()) {
@@ -79,7 +78,7 @@ public class HTTPRequestHandler {
 //			 Add texttype html for translating html + "&textType=html"
 			HttpPost httpPost = new HttpPost(Const.TRANSLATE_URL + "&from="
 					+ fromLang + "&to=" + toLang);
-			
+
 			JsonArray jsonArray = new JsonArray();
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("Text", word);
@@ -87,6 +86,7 @@ public class HTTPRequestHandler {
 		    httpPost.setEntity(new StringEntity(jsonArray.toString()));
             httpPost.addHeader("Ocp-Apim-Subscription-Key", Const.API_KEY);
             httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
+            System.out.println(jsonArray.toString());
 
 			// System.out.println(request.getURI());
 

@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,7 @@ public class StringsFilesGenerator {
 		readHtmlFile();
 		getLanguageList();
 		abbNamePair = Util.removeUnsupported(abbNamePair);
+//		String[] only_translate = ["af", "bn", "bs", "cy", "da", "fa", "fi", "fil", "fj", "ga", "gu", "he", "ht", "hu", "id", "is", "kk", "kn", "mg", "mi", "ml", "mr", "ms", "mt", "mww", "otq", "pa", "sl", "sm", "sw", "ta", "te", "to", "ur", "yue"]
 		getTranslations();
 	}
 
@@ -73,6 +75,13 @@ public class StringsFilesGenerator {
 						FileInputStream fileInputStream = new FileInputStream(f);
 						ObjectInputStream s = new ObjectInputStream(fileInputStream);
 						cache = (HashMap<String, String>) s.readObject();
+						Iterator<Map.Entry<String,String>> iter = cache.entrySet().iterator();
+						while (iter.hasNext()) {
+						    Map.Entry<String,String> entry = iter.next();
+						    if(entry.getValue() == null || "null".equalsIgnoreCase(entry.getValue())){
+						        iter.remove();
+						    }
+						}
 						s.close();
 					}
 				} catch (Exception e) {
