@@ -1,4 +1,4 @@
-# Android Auto-Localization - Translate Strings.XML
+# Android Auto-Localization - Translate Strings.XML™
 
 [![LicenseGPLv3](https://img.shields.io/badge/License-GPL%20v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0) [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UY6TVJXST724J)
 
