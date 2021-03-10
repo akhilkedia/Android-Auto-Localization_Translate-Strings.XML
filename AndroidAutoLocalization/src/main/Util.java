@@ -31,16 +31,20 @@ public class Util {
 		while (iter.hasNext()) {
 			String language = iter.next();
 			if (language.equals("fjn") 
-					|| language.equals("mww") 
-					|| language.equals("otq")  
+					|| language.equals("fr-CA")
+					|| language.equals("kmr")
+					|| language.equals("mww")
+					|| language.equals("otq")
+					|| language.equals("prs")
 					|| language.equals("pt-pt") 
+					|| language.equals("pt-PT")
 					|| language.equals("sm") 
 					|| language.equals("sr-Latn")
 					|| language.equals("tlh-Latn") 
 					|| language.equals("tlh-Piqd")
 					|| language.equals("ty") 
 					|| language.equals("yua")
-					|| language.equals("zh-Hant")  ) {
+					|| language.equals("zh-Hant") ) {
 				iter.remove();
 			}
 		}
